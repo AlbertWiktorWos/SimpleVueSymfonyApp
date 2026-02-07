@@ -22,8 +22,8 @@ services:
     ports:
       - '9000:9000'
     environment:
-      XDEBUG_MODE: ${XDEBUG_MODE:-off} #set to debug or develop to enable xdebug
-      XDEBUG_START_WITH_REQUEST: ${XDEBUG_START_WITH_REQUEST:-no} #set to yes to start xdebug with each request
+      XDEBUG_MODE: ${XDEBUG_MODE:-off}
+      XDEBUG_START_WITH_REQUEST: ${XDEBUG_START_WITH_REQUEST:-no}
     volumes:
       - ./:/var/www/project
       - symfony_var:/var/www/project/var
@@ -44,7 +44,6 @@ services:
     depends_on:
       - php
       - database
-# we added volumes with symfony_var for faster I/O (caching, logs, etc.)
 volumes:
   symfony_var:
   db_data:
