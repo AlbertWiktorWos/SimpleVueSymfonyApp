@@ -18,16 +18,16 @@ class Person
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "Imię jest wymagane")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "Nazwisko jest wymagane")]
     private ?string $lastName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank]
-    #[Assert\LessThan('today')]
+    #[Assert\NotBlank(message: "Data urodzenia jest wymagana")]
+    #[Assert\LessThan("today", message: "Data urodzenia musi być wcześniejsza niż dzisiaj")]
     private ?\DateTime $birthDate = null;
 
     /**
