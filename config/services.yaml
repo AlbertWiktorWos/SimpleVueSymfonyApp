@@ -22,3 +22,17 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\Mapper\PersonMapper: ~
+    App\Service\Mapper\ContactMapper: ~
+    App\Service\Mapper\WorkExperienceMapper: ~
+
+    _instanceof:
+        App\Service\Mapper\MapperAbstract:
+            tags: [ app.entity_mapper ]
+
+    App\Service\MapperManager:
+        class: App\Service\MapperManager
+        arguments:
+            - !tagged_locator
+                tag: app.entity_mapper
