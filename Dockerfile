@@ -18,11 +18,11 @@ RUN pecl install xdebug \
 
 
 # -------------------------
-# Install Node 18.15 + npm 9.5 + Yarn 1.22 - this versions works localy well
+# Install Node + npm + Yarn
 # -------------------------
-ENV NODE_VERSION=18.15.0
-ENV NPM_VERSION=9.5.0
-ENV YARN_VERSION=1.22.10
+ENV NODE_VERSION=18.20.1
+ENV NPM_VERSION=9.7.2
+ENV YARN_VERSION=1.22.19
 
 # Install Node
 RUN curl -fsSL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz \
@@ -45,7 +45,5 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash
 # The second command RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony moves the symfony binary from the /root/.symfony/bin/ directory to the /usr/local/bin/ directory.
 # This makes the symfony command available globally within the container, so it can be called from any location.
 RUN mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
-# Setting config for my git
-RUN git config --global user.email "mescruu@gmail.com" \
-    && git config --global user.name "Mescruu"
+
 

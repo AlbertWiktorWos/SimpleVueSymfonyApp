@@ -2,28 +2,25 @@
 
 namespace App\Service\Mapper;
 
+use App\Dto\ContactModel;
 use App\Entity\Contact;
 
 class ContactMapper extends MapperAbstract
 {
 
-    public function getCode(): string
+    public static function getDtoClass(): string
     {
-        return 'contact';
+        return ContactModel::class;
     }
-    public function map(array $data, object $entity): object
+    public function map(object $dto, object $entity): object
     {
         if(!$entity instanceof Contact){
             throw new \Exception('Nie można zmapować danych na encję, ponieważ nie jest ona instancją klasy Kontaktu.');
         }
 
-        if (array_key_exists('email', $data)) {
-            $entity->setEmail($data['email']);
-        }
+        $entity->setEmail($dto->email);
+        $entity->setPhone($dto->phone);
 
-        if (array_key_exists('phone', $data)) {
-            $entity->setPhone($data['phone']);
-        }
         return $entity;
     }
 

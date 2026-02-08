@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PersonRepository::class)]
 class Person
@@ -18,17 +17,13 @@ class Person
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Imię jest wymagane")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Nazwisko jest wymagane")]
     private ?string $lastName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: "Data urodzenia jest wymagana")]
-    #[Assert\LessThan("today", message: "Data urodzenia musi być wcześniejsza niż dzisiaj")]
-    private ?\DateTime $birthDate = null;
+    private ?\DateTimeInterface $birthDate = null;
 
     /**
      * @var Collection<int, Contact>
@@ -77,12 +72,12 @@ class Person
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTime
+    public function getBirthDate(): ?\DateTimeInterface
     {
         return $this->birthDate;
     }
 
-    public function setBirthDate(\DateTime $birthDate): static
+    public function setBirthDate(\DateTimeInterface $birthDate): static
     {
         $this->birthDate = $birthDate;
 

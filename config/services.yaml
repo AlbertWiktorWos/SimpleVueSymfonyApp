@@ -36,3 +36,4 @@ services:
         arguments:
             - !tagged_locator
                 tag: app.entity_mapper
+                default_index_method: 'getDtoClass'

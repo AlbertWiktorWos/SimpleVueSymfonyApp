@@ -8,7 +8,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[DateRange]
 #[ORM\Entity(repositoryClass: WorkExperienceRepository::class)]
 class WorkExperience
 {
@@ -18,24 +17,19 @@ class WorkExperience
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Firma jest wymagana")]
     private ?string $company = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Stanowisko jest wymagane")]
     private ?string $position = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: "Data rozpoczęcia jest wymagana")]
     private ?\DateTime $dateFrom = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: "Data zakończenia jest wymagana")]
     private ?\DateTime $dateTo = null;
 
     #[ORM\ManyToOne(inversedBy: 'workExperiences')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank]
     private ?Person $person = null;
 
     public function getId(): ?int

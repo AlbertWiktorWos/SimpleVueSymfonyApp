@@ -13,28 +13,6 @@ class MapperManager
     ) {
     }
 
-    /**
-     * Zwraca zmapowane encje na podstawie danych tablicowych.
-     */
-    public function mapEntitiesByData(array $data): array
-    {
-        $entities = [];
-        foreach ($data as $code => $itemData) {
-
-            $mapper = $this->getMapper($code);
-            if(array_is_list($data) && $this->getMapper($code)->supportsCollections()){
-                foreach($itemData as $key => $datum){
-                    $data[$key] = $mapper->prepareEntityByData($datum);
-                }
-                $entities[$code] = $data;
-                continue;
-            }
-            $entities[$code] = $this->prepareEntity($code, $itemData);
-        }
-
-        return $entities;
-    }
-
     public function getMapper(string $code): ?MapperAbstract
     {
         if ($this->getMapperLocator()->has($code)) {
@@ -51,13 +29,13 @@ class MapperManager
 
 
     /**
-     * Mapuje dane tablicowe na encje.
+     * Mapuje dane DTO na encje.
      */
-    public function prepareEntity(string $code, array $data): object
+    public function mapEntityByDTO(object $data): object
     {
-        $mapper = $this->getMapper($code);
+        $mapper = $this->getMapper($data::class);
         if(!$mapper instanceof MapperAbstract){
-            throw new \Exception("Nie udało się odnaleźć serwisu mapującego dla kodu '$code'.");
+            throw new \Exception("Nie udało się odnaleźć serwisu mapującego dla klasy ".$data::class.".");
         }
 
         return $mapper->prepareEntityByData($data);

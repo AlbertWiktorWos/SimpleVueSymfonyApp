@@ -11,8 +11,8 @@ abstract class MapperAbstract
     {
     }
 
-    abstract public function getCode(): string;
-    abstract public function map(array $data, object $entity): ?object;
+    abstract public static function getDtoClass(): string;
+    abstract public function map(object $dto, object $entity): ?object;
     abstract public function getEntityClass(): string;
 
     public function getIdField(): string
@@ -20,27 +20,26 @@ abstract class MapperAbstract
         return 'id';
     }
 
-    public function prepareEntityByData(array $data): ?object
+    public function prepareEntityByData(object $dto): ?object
     {
+        if (!$dto instanceof ($this->getDtoClass())) {
+            throw new \InvalidArgumentException(sprintf(
+                'Spodziewano DTO typu %s, %s otrzymano.',
+                $this->getDtoClass(),
+                get_debug_type($dto)
+            ));
+        }
+
         $entity = null;
-        if(isset($data[$this->getIdField()])){
-            $entity = $this->entityManager->getRepository($this->getEntityClass())->find($data[$this->getIdField()]);
+        if(isset($dto->{$this->getIdField()})){
+            $entity = $this->entityManager->getRepository($this->getEntityClass())->find($dto->{$this->getIdField()});
         }
 
         if($entity === null) {
             $entity = new ($this->getEntityClass())();
         }
 
-        if(empty($data)) {
-            return null;
-        }
-        return $this->map($data, $entity);
-    }
-
-
-    public function supportsCollections(): bool
-    {
-        return false;
+        return $this->map($dto, $entity);
     }
 
 }

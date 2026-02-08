@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\ContactRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -15,16 +14,9 @@ class Contact
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
-    #[Assert\NotBlank(message: "Telefon jest wymagany")]
-    #[Assert\Regex(
-        pattern: '/^\+?[0-9\s\-]{7,20}$/',
-        message: "Niepoprawny numer telefonu"
-    )]
     private ?string $phone = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: "E-mail jest wymagany")]
-    #[Assert\Email(message: "Niepoprawny adres e-mail")]
     private ?string $email = null;
 
     #[ORM\ManyToOne(inversedBy: 'contacts')]
