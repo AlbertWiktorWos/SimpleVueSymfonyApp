@@ -18,19 +18,19 @@ class WorkExperienceModel
     public string $position;
 
     #[Assert\NotBlank(message: "Data rozpoczęcia jest wymagana")]
-    public \DateTime $dateFrom;
+    public ?\DateTime $dateFrom;
 
     #[Assert\NotBlank(message: "Data zakończenia jest wymagana")]
-    public \DateTime $dateTo;
+    public ?\DateTime $dateTo;
 
     /**
      * @param string $company
      * @param string $position
-     * @param \DateTime $dateFrom
-     * @param \DateTime $dateTo
+     * @param \DateTime|null $dateFrom
+     * @param \DateTime|null $dateTo
      * @param int|null $id
      */
-    public function __construct(string $company, string $position, \DateTime $dateFrom, \DateTime $dateTo, ?int $id = null)
+    public function __construct(string $company, string $position, ?\DateTime $dateFrom = null, ?\DateTime $dateTo = null, ?int $id = null)
     {
         $this->id = $id;
         $this->company = $company;

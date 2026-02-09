@@ -111,7 +111,14 @@ export default {
     }
 
     async function submit() {
-      await store.submit()
+      const result = await store.submit()
+
+      if (!result) {
+        for (const [key, currentStepComponent] of Object.entries(steps)) {
+          currentStepComponent.v$?.value?.$touch()
+        }
+        stepIndex.value = 0;
+      }
     }
 
     return {

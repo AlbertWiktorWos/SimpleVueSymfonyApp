@@ -9,8 +9,8 @@
           class="form-control"
           v-model="form.firstName"
       />
-      <div v-if="errors?.firstName" class="text-danger mt-1">
-        {{ errors.firstName }}
+      <div  class="text-danger mt-1" v-for="err in v$.firstName.$errors" :key="err.$validator">
+        {{ err.$message }}
       </div>
     </div>
 
@@ -21,8 +21,8 @@
           class="form-control"
           v-model="form.lastName"
       />
-      <div v-if="errors?.lastName" class="text-danger mt-1">
-        {{ errors.lastName }}
+      <div  class="text-danger mt-1" v-for="err in v$.lastName.$errors" :key="err.$validator">
+        {{ err.$message }}
       </div>
     </div>
 
@@ -34,8 +34,8 @@
           v-model="form.birthDate"
           :max="today"
       />
-      <div v-if="errors?.birthDate" class="text-danger mt-1">
-        {{ errors.birthDate }}
+      <div  class="text-danger mt-1" v-for="err in v$.birthDate.$errors" :key="err.$validator">
+        {{ err.$message }}
       </div>
     </div>
   </div>
@@ -44,15 +44,12 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useFormValidation } from '../../validation/appFormValidation'
 
 const props = defineProps({
   modelValue: {
     type: Object,
     required: true
-  },
-  errors: {
-    type: Object,
-    default: () => ({})
   }
 })
 
@@ -63,6 +60,8 @@ const form = computed({
   set: value => emit('update:modelValue', value)
 })
 
+const { v$ } = useFormValidation(form)
 const today = new Date().toISOString().split('T')[0]
 </script>
+
 

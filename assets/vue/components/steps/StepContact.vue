@@ -9,8 +9,8 @@
           class="form-control"
           v-model="form.phone"
       />
-      <div v-if="errors?.phone" class="text-danger mt-1">
-        {{ errors.phone }}
+      <div  class="text-danger mt-1" v-for="err in v$.phone.$errors" :key="err.$validator">
+        {{ err.$message }}
       </div>
     </div>
 
@@ -21,8 +21,8 @@
           class="form-control"
           v-model="form.email"
       />
-      <div v-if="errors?.email" class="text-danger mt-1">
-        {{ errors.email }}
+      <div  class="text-danger mt-1" v-for="err in v$.email.$errors" :key="err.$validator">
+        {{ err.$message }}
       </div>
     </div>
   </div>
@@ -30,15 +30,12 @@
 
 <script setup>
 import { computed } from 'vue'
+import {useFormValidation} from "../../validation/appFormValidation";
 
 const props = defineProps({
   modelValue: {
     type: Object,
     required: true
-  },
-  errors: {
-    type: Object,
-    default: () => ({})
   }
 })
 
@@ -48,4 +45,5 @@ const form = computed({
   get: () => props.modelValue,
   set: value => emit('update:modelValue', value)
 })
+const { v$ } = useFormValidation(form)
 </script>

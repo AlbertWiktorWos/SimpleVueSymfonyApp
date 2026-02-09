@@ -1,27 +1,33 @@
 // formStore.js
 import { reactive, ref } from 'vue'
 import { sendForm } from '../services/api'
+import {useFormValidation} from "../validation/appFormValidation";
 
 const form = reactive({
     firstName: '',
     lastName: '',
-    birthDate: '',
+    birthDate: null,
     email: '',
     phone: '',
     experiences: []
 })
 
-const errors = reactive({})
 const allErrorMessages = ref([])
 const submitted = ref(false)
 const result = ref(null)
 
 function resetErrors() {
-    Object.keys(errors).forEach(k => delete errors[k])
     allErrorMessages.value = []
 }
 
 async function submit() {
+
+    const v$ = useFormValidation(form)
+    if(v$.isValid){
+        alert("Formularz jest niepoprawny. Popraw błędy przed wysłaniem.");
+        return;
+    }
+
     resetErrors()
     const payload = {
         firstName: form.firstName,
@@ -44,34 +50,27 @@ async function submit() {
 
     // mapowanie błędów z backendu
     res.errors.forEach(err => {
-        allErrorMessages.value.push(err.message)
         debugger;
-        const match = err.property.match(/^workExperiences\[(\d+)\]\.(\w+)$/)
-        if (match) {
-            const [_, index, field] = match
-            errors.experiences ??= []
-            errors.experiences[index] ??= {}
-            errors.experiences[index][field] = err.message
-            return
+        if (err.property.startsWith("workExperiences")) {
+            allErrorMessages.value.push("Doświadczenie zawodowe: "+err.message);
+            return;
         }
 
-        const contact = err.property.match(/^contact\.(\w+)$/)
-        if (contact) {
-            errors[contact[1]] = err.message
-            return
+        if (err.property.startsWith("contact")) {
+            allErrorMessages.value.push("Dane kontaktowe: "+err.message);
+            return;
         }
-
-        errors[err.property] = err.message
+        // inne pola globalne, np. birthDate
+        allErrorMessages.value.push("Dane podstawowe: "+err.message);
     })
 
     return false
 }
 
-// Singleton: zawsze ten sam obiekt
+// Singleton
 export function useFormStore() {
     return {
         form,
-        errors,
         allErrorMessages,
         submitted,
         result,

@@ -16,10 +16,12 @@ class AppFormDtoFactory
     {
         return $this->serializer->deserialize($json, PersonModel::class, 'json', [
             AbstractNormalizer::CALLBACKS => [
-                'workExperiences' => fn(array $items) => array_map(
-                    fn($we) => $this->serializer->denormalize($we, WorkExperienceModel::class),
-                    $items
-                )
+                'birthDate' => fn($value) => $value === '' ? null : $value,
+                'workExperiences' => fn(array $items) => array_map(function($we) {
+                    $we['dateFrom'] = $we['dateFrom'] === '' ? null : $we['dateFrom'];
+                    $we['dateTo'] = $we['dateTo'] === '' ? null : $we['dateTo'];
+                    return $this->serializer->denormalize($we, WorkExperienceModel::class);
+                }, $items)
             ],
         ]);
     }

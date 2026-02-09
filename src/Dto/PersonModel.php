@@ -20,7 +20,7 @@ class PersonModel
 
     #[Assert\NotBlank(message: "Data urodzenia jest wymagana")]
     #[Assert\LessThan("today", message: "Data urodzenia musi być wcześniejsza niż dzisiaj")]
-    public \DateTime $birthDate;
+    public ?\DateTime $birthDate;
 
     #[Assert\Valid]
     public ContactModel $contact;
@@ -32,12 +32,12 @@ class PersonModel
     /**
      * @param string $firstName
      * @param string $lastName
-     * @param \DateTime $birthDate
+     * @param \DateTime|null $birthDate
      * @param ContactModel $contact
      * @param WorkExperienceModel|array $workExperiences
      * @param int|null $id
      */
-    public function __construct(string $firstName, string $lastName, \DateTime $birthDate, ContactModel $contact, array $workExperiences, ?int $id = null)
+    public function __construct(string $firstName, string $lastName, ?\DateTime $birthDate, ContactModel $contact, array $workExperiences, ?int $id = null)
     {
         $this->id = $id;
         $this->firstName = $firstName;
