@@ -1,26 +1,33 @@
 <template>
   <div>
     <h2 class="mb-3">Doświadczenie zawodowe</h2>
-    <experience-table
+
+    <ExperienceTable
         v-model="form.experiences"
-        :errors="$parent.errors.experiences || {}"
-    ></experience-table>
+        :errors="errors?.experiences || []"
+    />
   </div>
 </template>
 
+<script setup>
+import { computed } from 'vue'
+import ExperienceTable from '../ExperienceTable.vue'
 
-<script>
-import ExperienceTable from '../ExperienceTable.vue';
-
-export default {
-  name: 'StepExperience',
-  components: { ExperienceTable },
-  props: ['modelValue'],
-  computed: {
-    form: {
-      get() { return this.modelValue; },
-      set(value) { this.$emit('update:modelValue', value); }
-    }
+const props = defineProps({
+  modelValue: {
+    type: Object,
+    required: true
+  },
+  errors: {
+    type: Object,
+    default: () => ({})
   }
-};
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const form = computed({
+  get: () => props.modelValue,
+  set: value => emit('update:modelValue', value)
+})
 </script>
