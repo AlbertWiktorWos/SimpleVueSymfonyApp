@@ -3,13 +3,14 @@
     <h2 class="mb-3">Doświadczenie zawodowe</h2>
 
     <div>
+      <div class="table-responsive">
       <table class="table table-bordered table-striped fixed-table">
         <colgroup>
           <col style="width: 25%;">
           <col style="width: 25%;">
           <col style="width: 20%;">
           <col style="width: 20%;">
-          <col style="width: 10%;">
+          <col style="width: 10%; min-width: 100px">
         </colgroup>
         <thead class="table-light">
         <tr>
@@ -79,7 +80,7 @@
             </div>
           </td>
 
-          <td class="text-center">
+          <td class="text-center pr-4">
             <button type="button" class="btn btn-sm btn-danger" @click="remove(index)">
               Usuń
             </button>
@@ -87,7 +88,7 @@
         </tr>
         </tbody>
       </table>
-
+      </div>
       <button
           type="button"
           class="btn btn-sm btn-primary mt-2"
@@ -141,6 +142,8 @@ onMounted(() => {
 .fixed-table {
   table-layout: fixed;
   width: 100%;
+  overflow: auto;
+  min-width: 700px;
 }
 
 .fixed-table th, .fixed-table td {

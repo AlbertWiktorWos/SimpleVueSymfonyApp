@@ -161,6 +161,12 @@ export default {
 <style scoped>
 .card-body {
   min-height: 70vh;
-  min-width: 70vw;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
 }
+
 </style>
