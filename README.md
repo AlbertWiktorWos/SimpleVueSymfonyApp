@@ -41,11 +41,6 @@ Dane są mapowane na DTO
 Walidacja danych.
 Zapis danych do encji.
 
-# Testy
-Minimalny zestaw testów
-* tests/Service/FormSubmissionServiceTest.php – testowanie zapisu i walidacji
-* tests/Controller/MainControllerTest.php – testowanie endpointu HTTP
-
 # Uruchomienie projektu
 Skopiuj repozytorium i przejdź do katalogu projektu
 ````
@@ -58,20 +53,30 @@ docker-compose up -d --build
 ````
 Zainstaluj zależności i utwórz bazę danych
 ````
-docker-compose exec formapp_php composer install
-docker-compose exec formapp_php php bin/console doctrine:database:create
-docker-compose exec formapp_php php bin/console doctrine:migrations:migrate
+docker-compose exec php composer install
+docker-compose exec php php bin/console doctrine:database:create
+docker-compose exec php php bin/console doctrine:migrations:migrate
 ````
 Zainstaluj zależności JavaScript
 ````
-docker-compose exec formapp_php yarn install 
+docker-compose exec php yarn install 
 lub
-docker-compose exec formapp_php npm install 
+docker-compose exec php npm install 
 ````
 Zbuduj frontend (Webpack Encore)
 ```
-docker-compose exec formapp_php yarn run build
+docker-compose exec php yarn run build
 lub
-docker-compose exec formapp_php npm run build
+docker-compose exec php npm run build
 ```
 Otwórz przeglądarkę i przejdź do http://localhost:8080, aby zobaczyć działającą aplikację.
+
+# Testy
+Minimalny zestaw testów
+* tests/Service/FormSubmissionServiceTest.php – testowanie zapisu i walidacji
+* tests/Controller/MainControllerTest.php – testowanie endpointu HTTP
+
+## Uruchomienie testów:
+```
+php bin/phpunit
+```
