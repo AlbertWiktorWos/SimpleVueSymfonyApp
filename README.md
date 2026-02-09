@@ -26,8 +26,8 @@ Tabela z możliwością dodawania wielu wpisów
 Pola: 
 * firma (wymagane),
 * stanowisko (wymagane),
-* data od( wymagane, walidacja dat: od ≤ do),
-* data do (walidacja dat: od ≤ do)
+* data od (wymagane, walidacja dat: od ≤ do),
+* data do (wymagane, walidacja dat: od ≤ do)
 
 ## Wynik wysłania
 ![Form Step 4](docs/panel_4.jpg)
