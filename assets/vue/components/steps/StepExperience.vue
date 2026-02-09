@@ -3,7 +3,14 @@
     <h2 class="mb-3">Doświadczenie zawodowe</h2>
 
     <div>
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered table-striped fixed-table">
+        <colgroup>
+          <col style="width: 25%;">
+          <col style="width: 25%;">
+          <col style="width: 20%;">
+          <col style="width: 20%;">
+          <col style="width: 10%;">
+        </colgroup>
         <thead class="table-light">
         <tr>
           <th>Firma</th>
@@ -18,7 +25,9 @@
         <tr v-for="(exp, index) in form.experiences" :key="index">
           <td>
             <input type="text" v-model="exp.company" class="form-control"/>
-            <div v-if="v$.experiences && v$.experiences.$each.$response && v$.experiences.$each.$response.$errors[index].company" class="text-danger mt-1">
+            <div
+                v-if="v$.experiences && v$.experiences.$each.$response && v$.experiences.$each.$response.$errors[index].company"
+                class="text-danger mt-1">
               <div
                   v-for="error in v$.experiences.$each.$response.$errors[index].company"
                   :key="error"
@@ -30,7 +39,9 @@
 
           <td>
             <input type="text" v-model="exp.position" class="form-control"/>
-            <div v-if="v$.experiences && v$.experiences.$each.$response && v$.experiences.$each.$response.$errors[index].position" class="text-danger mt-1">
+            <div
+                v-if="v$.experiences && v$.experiences.$each.$response && v$.experiences.$each.$response.$errors[index].position"
+                class="text-danger mt-1">
               <div
                   v-for="error in v$.experiences.$each.$response.$errors[index].position"
                   :key="error"
@@ -42,7 +53,9 @@
 
           <td>
             <input type="date" v-model="exp.dateFrom" class="form-control"/>
-            <div v-if="v$.experiences && v$.experiences.$each.$response && v$.experiences.$each.$response.$errors[index].dateFrom" class="text-danger mt-1">
+            <div
+                v-if="v$.experiences && v$.experiences.$each.$response && v$.experiences.$each.$response.$errors[index].dateFrom"
+                class="text-danger mt-1">
               <div
                   v-for="error in v$.experiences.$each.$response.$errors[index].dateFrom"
                   :key="error"
@@ -54,7 +67,9 @@
 
           <td>
             <input type="date" v-model="exp.dateTo" class="form-control"/>
-            <div v-if="v$.experiences && v$.experiences.$each.$response && v$.experiences.$each.$response.$errors[index].dateTo" class="text-danger mt-1">
+            <div
+                v-if="v$.experiences && v$.experiences.$each.$response && v$.experiences.$each.$response.$errors[index].dateTo"
+                class="text-danger mt-1">
               <div
                   v-for="error in v$.experiences.$each.$response.$errors[index].dateTo"
                   :key="error"
@@ -85,7 +100,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import {computed, onMounted} from 'vue'
 import {useFormValidation} from "../../validation/appFormValidation";
 
 const props = defineProps({
@@ -114,6 +129,28 @@ const form = computed({
   get: () => props.modelValue,
   set: value => emit('update:modelValue', value)
 })
-const { v$ } = useFormValidation(form)
+const {v$} = useFormValidation(form)
+
+onMounted(() => {
+  v$.value.$touch()   // wszystkie pola stają się dirty i błędy będą widoczne
+})
 
 </script>
+
+<style>
+.fixed-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.fixed-table th, .fixed-table td {
+  white-space: nowrap;
+}
+
+.fixed-table .text-danger {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+</style>>
+

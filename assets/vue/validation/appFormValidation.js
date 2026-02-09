@@ -3,9 +3,11 @@ import { useVuelidate } from '@vuelidate/core'
 import { required, email, helpers, maxLength } from '@vuelidate/validators'
 
 export function useFormValidation(form) {
-    debugger;
     const rules = reactive({
-        firstName: { required: helpers.withMessage('Imię jest wymagane', required) },
+        firstName: {
+            required: helpers.withMessage('Imię jest wymagane', required),
+            maxLength: helpers.withMessage('Imię może mieć maksymalnie 255 znaków', maxLength(255))
+        },
         lastName: {
             required: helpers.withMessage('Nazwisko jest wymagane', required),
             maxLength: helpers.withMessage('Nazwisko może mieć maksymalnie 255 znaków', maxLength(255))
@@ -14,7 +16,17 @@ export function useFormValidation(form) {
             required: helpers.withMessage('Data urodzenia jest wymagana', required),
             isPast: helpers.withMessage(
                 'Data urodzenia musi być w przeszłości',
-                value => !value || new Date(value) < new Date()
+                value => {
+                    if (!value) return true
+
+                    const input = new Date(value)
+                    const today = new Date()
+
+                    input.setHours(0, 0, 0, 0)
+                    today.setHours(0, 0, 0, 0)
+
+                    return input < today
+                }
             )
         },
         phone: {
@@ -26,13 +38,20 @@ export function useFormValidation(form) {
         },
         email: {
             required: helpers.withMessage('Email jest wymagany', required),
-            email: helpers.withMessage('Email ma niepoprawny format', email)
+            email: helpers.withMessage('Email ma niepoprawny format', email),
+            maxLength: helpers.withMessage('Email może mieć maksymalnie 100 znaków', maxLength(100))
         },
         experiences: {
             // walidacja tablicy dynamicznej
             $each:  helpers.forEach({
-                company: { required: helpers.withMessage('Firma jest wymagana', required) },
-                position: { required: helpers.withMessage('Stanowisko jest wymagane', required) },
+                company: {
+                    required: helpers.withMessage('Firma jest wymagana', required),
+                    maxLength: helpers.withMessage('Firma może mieć maksymalnie 255 znaków', maxLength(255))
+                },
+                position: {
+                    required: helpers.withMessage('Stanowisko jest wymagane', required),
+                    maxLength: helpers.withMessage('Stanowisko może mieć maksymalnie 255 znaków', maxLength(255))
+                },
                 dateFrom: {
                     required: helpers.withMessage('Data od jest wymagana', required),
                     validRange: helpers.withMessage(

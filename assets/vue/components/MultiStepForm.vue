@@ -4,8 +4,29 @@
       <div class="card-body">
 
         <h3 class="text-center mb-4">
-          Formularz 3-krokowy
+          Formularz
         </h3>
+
+        <!-- indykator -->
+        <div class="steps mb-4">
+          <div
+              v-for="(label, index) in stepLabels"
+              :key="index"
+              class="step"
+              :class="{
+        active: index === stepIndex,
+        done: index < stepIndex
+      }"
+          >
+            <div class="step-circle">
+              <span v-if="index < stepIndex">✓</span>
+              <span v-else>{{ index + 1 }}</span>
+            </div>
+            <div class="step-label">
+              {{ label }}
+            </div>
+          </div>
+        </div>
 
         <!-- krok -->
         <component
@@ -43,7 +64,7 @@
           <h6>Doświadczenie zawodowe:</h6>
           <ul>
             <li v-for="(exp, i) in store.form.experiences" :key="i">
-              {{ exp.company }} — {{ exp.position }} od {{ exp.dateFrom }} do {{ exp.dateTo }}
+              Firma: {{ exp.company }}, Stanowisko: {{ exp.position }} od {{ exp.dateFrom }} do {{ exp.dateTo }}
             </li>
           </ul>
         </div>
@@ -93,9 +114,15 @@ export default {
   name: 'MultiStepForm',
   components: {StepBasic, StepContact, StepExperience},
   setup() {
+
+    const stepLabels = [
+      'Dane podstawowe',
+      'Kontakt',
+      'Doświadczenie'
+    ]
+
     const store = useFormStore()
 
-    debugger;
     const steps = [StepBasic, StepContact, StepExperience]
     const stepIndex = ref(0)
 
@@ -112,11 +139,7 @@ export default {
 
     async function submit() {
       const result = await store.submit()
-
       if (!result) {
-        for (const [key, currentStepComponent] of Object.entries(steps)) {
-          currentStepComponent.v$?.value?.$touch()
-        }
         stepIndex.value = 0;
       }
     }
@@ -124,6 +147,7 @@ export default {
     return {
       store,
       stepIndex,
+      stepLabels,
       currentStep,
       isLastStep,
       next,
@@ -136,7 +160,7 @@ export default {
 
 <style scoped>
 .card-body {
-  min-height: 400px;
-  min-width: 600px;
+  min-height: 70vh;
+  min-width: 70vw;
 }
 </style>

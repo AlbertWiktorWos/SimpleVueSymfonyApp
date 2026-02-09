@@ -22,13 +22,13 @@ function resetErrors() {
 
 async function submit() {
 
+    resetErrors()
     const v$ = useFormValidation(form)
-    if(v$.isValid){
-        alert("Formularz jest niepoprawny. Popraw błędy przed wysłaniem.");
-        return;
+    if(!v$.isValid.value) {
+        allErrorMessages.value.push("Formularz jest niepoprawny. Popraw błędy przed wysłaniem.");
+        return false;
     }
 
-    resetErrors()
     const payload = {
         firstName: form.firstName,
         lastName: form.lastName,
@@ -50,7 +50,6 @@ async function submit() {
 
     // mapowanie błędów z backendu
     res.errors.forEach(err => {
-        debugger;
         if (err.property.startsWith("workExperiences")) {
             allErrorMessages.value.push("Doświadczenie zawodowe: "+err.message);
             return;

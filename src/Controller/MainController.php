@@ -27,10 +27,12 @@ class MainController extends AbstractController
     #[Route('/form', name: 'form_submit', methods: ['POST'])]
     public function submit(Request $request, AppFormDtoFactory $dtoFactory): JsonResponse
     {
-
-        $dto = $dtoFactory->createPersonModelFromJson($request->getContent());
-
-        $response = $this->formService->submitAppForm($dto);
+        try {
+            $dto = $dtoFactory->createPersonModelFromJson($request->getContent());
+            $response = $this->formService->submitAppForm($dto);
+        }catch (\Exception $e) {
+            return $this->json(['success' => false, 'message' => 'Błąd przetwarzania danych: ' . $e->getMessage()], 400);
+        }
 
         $statusCode = $response['success'] ? 200 : 400;
 

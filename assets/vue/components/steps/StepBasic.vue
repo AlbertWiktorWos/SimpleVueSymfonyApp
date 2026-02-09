@@ -9,7 +9,7 @@
           class="form-control"
           v-model="form.firstName"
       />
-      <div  class="text-danger mt-1" v-for="err in v$.firstName.$errors" :key="err.$validator">
+      <div class="text-danger mt-1" v-for="err in v$.firstName.$errors" :key="err.$validator">
         {{ err.$message }}
       </div>
     </div>
@@ -21,7 +21,7 @@
           class="form-control"
           v-model="form.lastName"
       />
-      <div  class="text-danger mt-1" v-for="err in v$.lastName.$errors" :key="err.$validator">
+      <div class="text-danger mt-1" v-for="err in v$.lastName.$errors" :key="err.$validator">
         {{ err.$message }}
       </div>
     </div>
@@ -32,9 +32,9 @@
           type="date"
           class="form-control"
           v-model="form.birthDate"
-          :max="today"
+          :max="yesterday"
       />
-      <div  class="text-danger mt-1" v-for="err in v$.birthDate.$errors" :key="err.$validator">
+      <div class="text-danger mt-1" v-for="err in v$.birthDate.$errors" :key="err.$validator">
         {{ err.$message }}
       </div>
     </div>
@@ -43,8 +43,8 @@
 
 
 <script setup>
-import { computed } from 'vue'
-import { useFormValidation } from '../../validation/appFormValidation'
+import {computed, onMounted} from 'vue'
+import {useFormValidation} from '../../validation/appFormValidation'
 
 const props = defineProps({
   modelValue: {
@@ -60,8 +60,13 @@ const form = computed({
   set: value => emit('update:modelValue', value)
 })
 
-const { v$ } = useFormValidation(form)
-const today = new Date().toISOString().split('T')[0]
+const {v$} = useFormValidation(form)
+const yesterdayDate = new Date();
+yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+const yesterday = yesterdayDate.toISOString().split('T')[0];
+onMounted(() => {
+  v$.value.$touch()   // wszystkie pola stają się dirty i błędy będą widoczne
+})
 </script>
 
 

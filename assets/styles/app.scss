@@ -1,1 +1,182 @@
+@use "variables" as *;
 @import "~bootstrap/scss/bootstrap";
+
+body {
+  background: $color-bg;
+  background: radial-gradient(circle, $color-bg 0%, $color-bg2, 1 100%);
+
+  color: $color-text;
+}
+
+.card {
+  border-radius: $radius-lg;
+  border: 1px solid $color-border;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card-footer {
+  background: transparent;
+  border-top: 1px solid $color-border;
+  padding: 1.25rem 2rem;
+}
+
+h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: $color-text-muted;
+}
+
+.form-control {
+  border-radius: $radius-md;
+  border: 1px solid $color-border;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.95rem;
+  transition: border $transition-fast, box-shadow $transition-fast;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.15);
+  }
+}
+
+.text-danger {
+  font-size: 0.8rem;
+}
+
+.btn {
+  border-radius: $radius-md;
+  font-weight: 500;
+  padding: 0.45rem 1.1rem;
+  transition: background $transition-fast, transform $transition-fast;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.btn-primary {
+  background: $color-primary;
+  border: none;
+
+  &:hover {
+    background: darken($color-primary, 6%);
+  }
+}
+
+.btn-secondary {
+  background: $color-secondary;
+  border: none;
+}
+
+.btn-success {
+  background: $color-success;
+  border: none;
+}
+
+.btn-danger {
+  background: $color-danger;
+  border: none;
+}
+
+.alert {
+  border-radius: $radius-md;
+  border: 1px solid $color-border;
+  font-size: 0.9rem;
+}
+
+.alert-danger {
+  background: rgba($color-danger, 0.06);
+  color: $color-danger;
+}
+
+.alert-success {
+  background: rgba($color-success, 0.06);
+  color: $color-success;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0 8px;
+
+  thead th {
+    font-size: 0.85rem;
+    color: $color-text-muted;
+    border: none;
+  }
+
+  tbody tr {
+    background: $color-card;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.04);
+    border-radius: $radius-md;
+  }
+
+  td {
+    border: none;
+    vertical-align: middle;
+  }
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  color: $color-text-muted;
+}
+
+.step-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid $color-border;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: $color-card;
+  transition: all $transition-normal;
+}
+
+.step-label {
+  font-size: 0.75rem;
+  text-align: center;
+  max-width: 90px;
+}
+
+.step.active {
+  color: $color-primary;
+
+  .step-circle {
+    background: $color-primary;
+    border-color: $color-primary;
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba($color-primary, 0.15);
+  }
+}
+
+.step.done {
+  color: $color-success;
+
+  .step-circle {
+    border-color: $color-success;
+    color: $color-success;
+    background: rgba($color-success, 0.08);
+  }
+}
+

@@ -9,7 +9,7 @@
           class="form-control"
           v-model="form.phone"
       />
-      <div  class="text-danger mt-1" v-for="err in v$.phone.$errors" :key="err.$validator">
+      <div class="text-danger mt-1" v-for="err in v$.phone.$errors" :key="err.$validator">
         {{ err.$message }}
       </div>
     </div>
@@ -21,7 +21,7 @@
           class="form-control"
           v-model="form.email"
       />
-      <div  class="text-danger mt-1" v-for="err in v$.email.$errors" :key="err.$validator">
+      <div class="text-danger mt-1" v-for="err in v$.email.$errors" :key="err.$validator">
         {{ err.$message }}
       </div>
     </div>
@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import {computed, onMounted} from 'vue'
 import {useFormValidation} from "../../validation/appFormValidation";
 
 const props = defineProps({
@@ -45,5 +45,8 @@ const form = computed({
   get: () => props.modelValue,
   set: value => emit('update:modelValue', value)
 })
-const { v$ } = useFormValidation(form)
+const {v$} = useFormValidation(form)
+onMounted(() => {
+  v$.value.$touch()   // wszystkie pola stają się dirty i błędy będą widoczne
+})
 </script>
